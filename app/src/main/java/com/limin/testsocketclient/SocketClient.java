@@ -53,7 +53,7 @@ public class SocketClient{
 
             System.out.println("you are sendding MSG :  "+ message);
             //String message = stdin.readLine();
-            String result = "init";
+            String result = "";
         try{
             stdin = new BufferedReader(new InputStreamReader(System.in));
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
@@ -69,7 +69,11 @@ public class SocketClient{
                 out.flush();
                 System.out.println("Successfully send the message");
             }
-            result = in.readLine();
+            String tmp="";
+            while( ( tmp = in.readLine() )!=null && tmp.length()!=0){
+                System.out.println(tmp);
+                result = result + tmp;
+            }
             System.out.println("The data received is : "+result);
 
         } catch(java.io.IOException e){
@@ -83,7 +87,11 @@ public class SocketClient{
     public String listenMessage(){
         String message = "";
         try{
-            message = in.readLine();
+            String tmp="";
+            while( ( tmp = in.readLine() )!=null){
+                System.out.println(tmp);
+                message = message + tmp;
+            }
             System.out.print("got MSG from server" + message);
         }catch(IOException e){
 
