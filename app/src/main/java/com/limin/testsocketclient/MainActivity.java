@@ -23,7 +23,7 @@ public class MainActivity extends ActionBarActivity {
     Thread listeningThread;
     TextView text ;
     //Socket Server information
-    final String ServerIP = "140.113.68.27";
+    final String ServerIP = "140.113.65.65";
     final int ServerPort = 7777;
     //layout information
     EditText myID;
