@@ -3,6 +3,7 @@ package com.limin.testsocketclient;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,12 +19,12 @@ import java.util.TimerTask;
 
 
 public class MainActivity extends ActionBarActivity {
-    SocketClient socketclient;
+    SocketClient socketclient = null;
     Button send;
     Thread listeningThread;
     TextView text ;
     //Socket Server information
-    final String ServerIP = "140.113.65.65";
+    final String ServerIP = "10.0.0.54";
     final int ServerPort = 7777;
     //layout information
     EditText myID;
@@ -86,10 +87,16 @@ public class MainActivity extends ActionBarActivity {
 
                         String message = "";
                         //set the message
-                        message = (message+"ID:"+myID.getText()+"\n");
-                        message = (message+"speedVector:"+mySpeedVector.getText()+"\n");
-                        message = (message+"shieldOrientation:"+myShieldOrientationVector.getText()+"\n");
-                        String result = socketclient.sendMessage(message);
+                        message = (myID.getText()+":");
+                        message = (message+mySpeedVector.getText()+":");
+                        message = (message+myShieldOrientationVector.getText());
+                        String result = "";
+                        if(message!=null || message.isEmpty()) {
+                            result = socketclient.sendMessage(message);
+                        }else {
+                            System.out.println("start"+myID.getText()+":"+mySpeedVector.getText()+":"+myShieldOrientationVector.getText());
+                            System.out.println(message);
+                        }
                         Bundle msgBundle = new Bundle();
                         msgBundle.putString("result", result);
                         //msgBundle.putInt("result", 123);
@@ -123,10 +130,16 @@ public class MainActivity extends ActionBarActivity {
 
                                 String message = "";
                                 //set the message
-                                message = (message+"ID:"+myID.getText()+"\n");
-                                message = (message+"speedVector:"+mySpeedVector.getText()+"\n");
-                                message = (message+"shieldOrientation:"+myShieldOrientationVector.getText()+"\n");
-                                String result = socketclient.sendMessage(message);
+                                message = (myID.getText()+":");
+                                message = (message+mySpeedVector.getText()+":");
+                                message = (message+myShieldOrientationVector.getText());
+                                String result = "";
+                                if(message!=null || message.isEmpty()) {
+                                    result = socketclient.sendMessage(message);
+                                }else {
+                                    System.out.println("start"+myID.getText()+":"+mySpeedVector.getText()+":"+myShieldOrientationVector.getText());
+                                    System.out.println(message);
+                                }
                                 Bundle msgBundle = new Bundle();
                                 msgBundle.putString("result", result);
                                 //msgBundle.putInt("result", 123);
@@ -162,8 +175,9 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public void onPause(){
         super.onPause();
-
-        socketclient.disconnect();
+        if(socketclient!=null) {
+            socketclient.disconnect();
+        }
     }
 
     @Override
