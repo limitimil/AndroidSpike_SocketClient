@@ -59,7 +59,7 @@ public class SocketClient{
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             out = new PrintWriter(client.getOutputStream(), true);
 
-            System.out.print("-- socket connect test --");
+            System.out.println("-- socket connect test --");
             //String message = stdin.readLine();
 
             if(message == null || message.isEmpty())
@@ -69,11 +69,8 @@ public class SocketClient{
                 out.flush();
                 System.out.println("Successfully send the message");
             }
-            String tmp="";
-            while( ( tmp = in.readLine() )!=null && tmp.length()!=0){
-                System.out.println(tmp);
-                result = result + tmp;
-            }
+            result = in.readLine();
+            
             System.out.println("The data received is : "+result);
 
         } catch(java.io.IOException e){
