@@ -1,9 +1,7 @@
 package com.limin.testsocketclient;
 
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,12 +22,14 @@ public class MainActivity extends ActionBarActivity {
     Thread listeningThread;
     TextView text ;
     //Socket Server information
-    final String ServerIP = "10.0.0.54";
+    final String ServerIP = "10.0.0.35";
     final int ServerPort = 7777;
     //layout information
     EditText myID;
-    EditText mySpeedVector;
-    EditText myShieldOrientationVector;
+    EditText mySpeedX;
+    EditText mySpeedY;
+    EditText myShieldOrientationX;
+    EditText myShieldOrientationY;
     Button periodSend;
     Button stopPeriodSend;
     //periodically send
@@ -87,14 +87,15 @@ public class MainActivity extends ActionBarActivity {
 
                         String message = "";
                         //set the message
+                        //Here, I just send X coordinate to server in single send, because single send is not very useful in ourgame
                         message = (myID.getText()+":");
-                        message = (message+mySpeedVector.getText()+":");
-                        message = (message+myShieldOrientationVector.getText());
+                        message = (message+mySpeedX.getText()+":");
+                        message = (message+myShieldOrientationX.getText());
                         String result = "";
                         if(message!=null || message.isEmpty()) {
                             result = socketclient.sendMessage(message);
                         }else {
-                            System.out.println("start"+myID.getText()+":"+mySpeedVector.getText()+":"+myShieldOrientationVector.getText());
+                            System.out.println("start"+myID.getText()+":"+mySpeedX.getText()+":"+myShieldOrientationX.getText());
                             System.out.println(message);
                         }
                         Bundle msgBundle = new Bundle();
@@ -113,8 +114,10 @@ public class MainActivity extends ActionBarActivity {
 
         //initializing layout information
         myID = (EditText)findViewById(R.id.myID);
-        mySpeedVector = (EditText)findViewById(R.id.mySpeedVector);
-        myShieldOrientationVector = (EditText)findViewById(R.id.myShieldOrientationVector);
+        mySpeedX = (EditText)findViewById(R.id.mySpeedX);
+        mySpeedY = (EditText)findViewById(R.id.mySpeedY);
+        myShieldOrientationX = (EditText)findViewById(R.id.myShieldOrientationX);
+        myShieldOrientationY = (EditText)findViewById(R.id.myShieldOrientationY);
         //button to periodically send packege
         periodSend = (Button)findViewById(R.id.periodSend);
         periodSend.setOnClickListener( new Button.OnClickListener(){
@@ -128,18 +131,15 @@ public class MainActivity extends ActionBarActivity {
                             @Override
                             public void run() {
 
-                                String message = "";
-                                //set the message
-                                message = (myID.getText()+":");
-                                message = (message+mySpeedVector.getText()+":");
-                                message = (message+myShieldOrientationVector.getText());
-                                String result = "";
-                                if(message!=null || message.isEmpty()) {
-                                    result = socketclient.sendMessage(message);
-                                }else {
-                                    System.out.println("start"+myID.getText()+":"+mySpeedVector.getText()+":"+myShieldOrientationVector.getText());
-                                    System.out.println(message);
-                                }
+
+                                String result;
+                                int ID = Integer.parseInt((myID.getText()).toString());
+                                float SpeedX = Float.parseFloat((mySpeedX.getText()).toString());
+                                float SpeedY = Float.parseFloat((mySpeedY.getText()).toString());
+                                float ShieldX = Float.parseFloat((myShieldOrientationX.getText()).toString());
+                                float ShieldY = Float.parseFloat((myShieldOrientationY.getText()).toString());
+                                result = socketclient.sendAgentStatus(ID,SpeedX,SpeedY,ShieldX,ShieldY);
+
                                 Bundle msgBundle = new Bundle();
                                 msgBundle.putString("result", result);
                                 //msgBundle.putInt("result", 123);

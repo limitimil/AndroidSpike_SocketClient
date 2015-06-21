@@ -70,7 +70,7 @@ public class SocketClient{
                 System.out.println("Successfully send the message");
             }
             result = in.readLine();
-            
+
             System.out.println("The data received is : "+result);
 
         } catch(java.io.IOException e){
@@ -80,7 +80,32 @@ public class SocketClient{
         return result;
 
     }
+    //customized socket function for our game
+    public String sendAgentStatus(int agentID,float speedX,float speedY,float shieldX, float shieldY){
+        String message;
+        String result = "";
+        try{
 
+            message = (Integer.toString(agentID)+":"+Float.toString(speedX)+","+Float.toString(speedY)+":"+Float.toString(shieldX)+","+Float.toString(shieldY));
+
+            if(message == null || message.isEmpty())
+                System.out.println("no message");
+            else{
+                out.write(message+"\r\n");  //  println()會多一個\n在尾巴  改用print 或write
+                out.flush();
+                System.out.println("Successfully send the message");
+            }
+            result = in.readLine();
+
+            System.out.println("The data received is : "+result);
+
+        } catch(java.io.IOException e){
+            System.out.println("Socket connection problem");
+            System.out.println("IOException :" + e.toString());
+        }
+        return result;
+
+    }
     public String listenMessage(){
         String message = "";
         try{

@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="send"
         android:id="@+id/button"
-        android:layout_centerVertical="true"
+        android:layout_alignTop="@+id/stopPeriodSend"
         android:layout_alignParentStart="true" />
 
     <TextView
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:text="my Shield Direction Vector"
         android:id="@+id/textView3"
-        android:layout_below="@+id/mySpeedVector"
+        android:layout_above="@+id/myShieldOrientationX"
         android:layout_alignParentStart="true" />
 
     <EditText
@@ -53,34 +53,52 @@
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/mySpeedVector"
+        android:id="@+id/mySpeedX"
         android:layout_below="@+id/textView2"
         android:layout_alignParentStart="true"
-        android:text="0,0" />
+        android:text="0" />
 
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/myShieldOrientationVector"
-        android:layout_below="@+id/textView3"
-        android:layout_alignParentStart="true"
-        android:text="0,0" />
+        android:id="@+id/myShieldOrientationX"
+        android:text="0"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Periodically Send"
         android:id="@+id/periodSend"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/textView2" />
+        android:layout_marginBottom="31dp"
+        android:layout_above="@+id/stopPeriodSend"
+        android:layout_alignStart="@+id/stopPeriodSend" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="stop periodically send"
         android:id="@+id/stopPeriodSend"
-        android:layout_below="@+id/periodSend"
-        android:layout_alignStart="@+id/periodSend"
-        android:layout_marginTop="28dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/textView2"
+        android:layout_marginBottom="54dp" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/mySpeedY"
+        android:layout_below="@+id/mySpeedX"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="19dp"
+        android:text="0" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/myShieldOrientationY"
+        android:layout_above="@+id/periodSend"
+        android:layout_alignParentStart="true"
+        android:text="0" />
 
 </RelativeLayout>
