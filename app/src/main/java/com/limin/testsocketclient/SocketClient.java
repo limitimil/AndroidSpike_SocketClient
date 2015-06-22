@@ -10,7 +10,14 @@ import java.net.Socket;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.Timer;
+import java.util.TimerTask;
 
+/*Instructions, Tips
+*SocketClient.onAir : local variable to check whether the connection is linked
+* if you want peroidically chat with server, here is some keyword for you "TimerTask" "Timer"
+*
+* */
 public class SocketClient{
 //    private String address = "140.113.68.27";
     /*make this class more packaged, you can customize your IP and port with 2 parameter of constructor*/
@@ -22,6 +29,7 @@ public class SocketClient{
     Socket client;
     Boolean onAir = false;
     private Handler threadHandler = null;
+    //periodically send
     public SocketClient(final String IP,final int Port,Handler handler){
         threadHandler = handler;
         client = new Socket();
