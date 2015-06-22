@@ -22,7 +22,7 @@ public class MainActivity extends ActionBarActivity {
     Thread listeningThread;
     TextView text ;
     //Socket Server information
-    final String ServerIP = "10.0.0.35";
+    final String ServerIP = "140.113.68.27";
     final int ServerPort = 7777;
     //layout information
     EditText myID;
@@ -70,13 +70,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         text=(TextView)findViewById(R.id.text);
-        new Thread(new Runnable (){
-            @Override
-            public void run(){
-                socketclient = new SocketClient(ServerIP,ServerPort);
-            }
-
-            });
+        socketclient = new SocketClient(ServerIP,ServerPort);
         send = (Button) findViewById(R.id.button);
         send.setOnClickListener( new Button.OnClickListener(){
             @Override
@@ -93,7 +87,7 @@ public class MainActivity extends ActionBarActivity {
                         message = (message+myShieldOrientationX.getText());
                         String result = "";
                         if(message!=null || message.isEmpty()) {
-                            result = socketclient.sendMessage(message);
+                            result = socketclient.sendMessage(message,false); //the second parameter tells whether te return string is multiline or not
                         }else {
                             System.out.println("start"+myID.getText()+":"+mySpeedX.getText()+":"+myShieldOrientationX.getText());
                             System.out.println(message);
@@ -138,7 +132,7 @@ public class MainActivity extends ActionBarActivity {
                                 float SpeedY = Float.parseFloat((mySpeedY.getText()).toString());
                                 float ShieldX = Float.parseFloat((myShieldOrientationX.getText()).toString());
                                 float ShieldY = Float.parseFloat((myShieldOrientationY.getText()).toString());
-                                result = socketclient.sendAgentStatus(ID,SpeedX,SpeedY,ShieldX,ShieldY);
+                                result = socketclient.sendAgentStatus(ID,SpeedX,SpeedY,ShieldX,ShieldY,false);
 
                                 Bundle msgBundle = new Bundle();
                                 msgBundle.putString("result", result);
@@ -183,12 +177,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public void onResume(){
         super.onResume();
-        new Thread(new Runnable(){
-            @Override
-            public void run(){
-                socketclient = new SocketClient(ServerIP,ServerPort);
-            }
-        }).start();
+        socketclient = new SocketClient(ServerIP,ServerPort);
     }
 
     @Override
