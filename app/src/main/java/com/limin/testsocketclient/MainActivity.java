@@ -19,7 +19,6 @@ import java.util.TimerTask;
 public class MainActivity extends ActionBarActivity {
     SocketClient socketclient = null;
     Button send;
-    Thread listeningThread;
     TextView text ;
     //Socket Server information
     final String ServerIP = "140.113.68.27";
