@@ -36,6 +36,7 @@ public class MainActivity extends ActionBarActivity {
     Timer SystemTimer = null;
     TimerTask sendTimer = null;
     final int periodToSend = 200;
+    //prepare for SocketClient thread handler
     HandlerExtension resultHandler = new HandlerExtension(this);
     private static class HandlerExtension extends Handler {
         private final WeakReference<MainActivity> currentActivity;
@@ -54,6 +55,8 @@ public class MainActivity extends ActionBarActivity {
             }
         }
     }
+
+    //control the ui
     public  void updateint(int i){
        System.out.print("update int : " + i);
     }
@@ -70,14 +73,11 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         text=(TextView)findViewById(R.id.text);
-        socketclient = new SocketClient(ServerIP,ServerPort);
+        socketclient = new SocketClient(ServerIP,ServerPort,resultHandler);
         send = (Button) findViewById(R.id.button);
         send.setOnClickListener( new Button.OnClickListener(){
             @Override
             public void onClick(View v){
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
 
                         String message = "";
                         //set the message
@@ -92,16 +92,7 @@ public class MainActivity extends ActionBarActivity {
                             System.out.println("start"+myID.getText()+":"+mySpeedX.getText()+":"+myShieldOrientationX.getText());
                             System.out.println(message);
                         }
-                        Bundle msgBundle = new Bundle();
-                        msgBundle.putString("result", result);
-                        //msgBundle.putInt("result", 123);
-                        Message msg = new Message();
-                        msg.setData(msgBundle);
-                        resultHandler.sendMessage(msg);
 
-                        /*resultHandler.handleMessage();*/
-                    }
-                }).start();
         }
 
         });
@@ -121,9 +112,6 @@ public class MainActivity extends ActionBarActivity {
                 sendTimer = new TimerTask(){
                     @Override
                     public void run(){
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
 
 
                                 String result;
@@ -133,17 +121,7 @@ public class MainActivity extends ActionBarActivity {
                                 float ShieldX = Float.parseFloat((myShieldOrientationX.getText()).toString());
                                 float ShieldY = Float.parseFloat((myShieldOrientationY.getText()).toString());
                                 result = socketclient.sendAgentStatus(ID,SpeedX,SpeedY,ShieldX,ShieldY,false);
-
-                                Bundle msgBundle = new Bundle();
-                                msgBundle.putString("result", result);
-                                //msgBundle.putInt("result", 123);
-                                Message msg = new Message();
-                                msg.setData(msgBundle);
-                                resultHandler.sendMessage(msg);
-
-                        /*resultHandler.handleMessage();*/
-                            }
-                        }).start();
+                                System.out.println(result);
                     }
                 };
                 SystemTimer = new Timer();
@@ -177,7 +155,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public void onResume(){
         super.onResume();
-        socketclient = new SocketClient(ServerIP,ServerPort);
+        socketclient = new SocketClient(ServerIP,ServerPort,resultHandler);
     }
 
     @Override
